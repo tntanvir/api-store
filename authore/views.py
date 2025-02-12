@@ -27,7 +27,7 @@ class RegisterView(APIView):
             user=serializer.save()
             token=default_token_generator.make_token(user)
             uid=urlsafe_base64_encode(force_bytes(user.pk))
-            confirm_link=f'https://api-clothify.onrender.com/authore/active/{uid}/{token}/'
+            confirm_link=f'https://api-store-iota.vercel.app/authore/active/{uid}/{token}/'
 
             email_subject ='Confirm Your Account'
             email_body=render_to_string('confirm_email.html',{'confirm_link':confirm_link})
@@ -47,9 +47,9 @@ def activate(request,uid64,token):
     if user is not None and default_token_generator.check_token(user,token):
         user.is_active=True
         user.save()
-        return redirect('login')
+        return redirect('https://style-23.web.app/singin')
     else:
-        return redirect('login')
+        return redirect('https://style-23.web.app/singin')
     
 class UserLoginView(APIView):
     def post(self, request):

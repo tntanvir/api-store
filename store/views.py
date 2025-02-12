@@ -650,15 +650,15 @@ class PaymentSuccessView(APIView):
         # Clear the cart
         cart.items.all().delete()
 
-        return redirect("http://localhost:5173/profile/orderhistory")
+        return redirect("https://style-23.web.app/profile/orderhistory")
 
 
 class PaymentFailView(APIView):
     def post(self, request):
-        return redirect("http://localhost:5173/cart")  
+        return redirect("https://style-23.web.app/cart")  
 
 
 
 class PaymentCancelView(APIView):
     def post(self, request):
-        return redirect("http://localhost:5173/cart")  
+        return redirect("https://style-23.web.app/cart")  
