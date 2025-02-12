@@ -503,9 +503,9 @@ class InitiatePaymentView(APIView):
             "total_amount": data.get("amount"),  # Amount to be paid
             "currency": "BDT",
             "tran_id": f"txn_{request.user.id}_{data.get('order_id')}",  # Unique transaction ID
-            "success_url": f"http://127.0.0.1:8000/store/payment/success/{request.user.id}/",
-            "fail_url": "http://127.0.0.1:8000/store/payment/fail/",
-            "cancel_url": "http://127.0.0.1:8000/store/payment/cancel/",
+            "success_url": f"https://api-store-iota.vercel.app/store/payment/success/{request.user.id}/",
+            "fail_url": "https://api-store-iota.vercel.app/store/payment/fail/",
+            "cancel_url": "https://api-store-iota.vercel.app/store/payment/cancel/",
             "cus_name": request.user.username,
             "cus_email": request.user.email,
             "cus_phone": data.get("phone"),
