@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-k*0adcn(0qezuat1appxvyc8u8o(m6%p8x#i9_^l*+9g12f671
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 
 CSRF_TRUSTED_ORIGINS = ["https://api-clothify.onrender.com","https://*.127.0.0.1"]
 
@@ -39,6 +39,7 @@ APPEND_SLASH = False
 # Application definition
 
 INSTALLED_APPS = [
+    "whitenoise.runserver_nostatic",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -98,16 +100,28 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Clothify.wsgi.application'
+WSGI_APPLICATION = 'Clothify.wsgi.app'
 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres.tpmazspnnyvzwbqjezrp',
+        'PASSWORD': '0sXFY36svCwNo4Tq',
+        'HOST': 'aws-0-us-west-1.pooler.supabase.com',
+        'PORT': '6543'
     }
 }
 
@@ -147,6 +161,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT=BASE_DIR / 'staticfiles'
+
+# MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
