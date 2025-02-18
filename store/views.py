@@ -263,103 +263,6 @@ class OrderItemBySellerView(ListAPIView):
             return OrderItem.objects.filter(seller__username=seller_name)
         return OrderItem.objects.none()
 
-# class CheckoutAPIView(APIView):
-#     @transaction.atomic
-#     def post(self, request):
-#         user = request.user
-#         cart = get_object_or_404(Cart, user=user, ordered=False)
-
-#         if cart.items.count() == 0:
-#             return Response({"detail": "Cart is empty."}, status=status.HTTP_400_BAD_REQUEST)
-
-#         order = Order.objects.create(user=user)
-#         total = 0
-
-#         for cart_item in cart.items.all():
-#             # Update product quantity in the database
-#             product = cart_item.product
-#             if product.quantity < cart_item.quantity:
-#                 return Response({"detail": f"Not enough {product.name} in stock."}, status=status.HTTP_400_BAD_REQUEST)
-
-#             product.quantity -= cart_item.quantity
-#             product.save()
-
-#             # Create OrderItem
-#             order_item = OrderItem.objects.create(
-#                 order=order,
-#                 product=cart_item.product,
-#                 quantity=cart_item.quantity,
-#                 size=cart_item.size,
-#                 color=cart_item.color,
-#                 price=cart_item.product.price * cart_item.quantity
-#             )
-
-#             total += order_item.price
-
-#         # Update the total price of the order
-#         order.total = total
-#         order.save()
-
-#         # Mark the cart as ordered
-#         cart.ordered = True
-#         cart.save()
-
-#         serializer = OrderSerializer(order)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-# class CheckoutAPIView(APIView):
-#     @transaction.atomic
-#     def post(self, request):
-#         user = request.user
-#         cart = get_object_or_404(Cart, user=user, ordered=False)
-
-#         if cart.items.count() == 0:
-#             return Response({"detail": "Cart is empty."}, status=status.HTTP_400_BAD_REQUEST)
-
-#         order = Order.objects.create(user=user)
-#         total = 0
-
-#         for cart_item in cart.items.all():
-#             product = cart_item.product
-#             if product.quantity < cart_item.quantity:
-#                 return Response({"detail": f"Not enough {product.name} in stock."}, status=status.HTTP_400_BAD_REQUEST)
-
-#             product.quantity -= cart_item.quantity
-#             product.save()
-
-#             # Create OrderItem
-#             order_item = OrderItem.objects.create(
-#                 order=order,
-#                 product=cart_item.product,
-#                 quantity=cart_item.quantity,
-#                 size=cart_item.size,
-#                 color=cart_item.color,
-#                 price=cart_item.product.price * cart_item.quantity
-#             )
-
-#             total += order_item.price
-
-#             # Update seller's order history
-#             if product.user:  # Ensure that the product has a seller
-#                 # Create or update the seller's order
-#                 seller_order, created = Order.objects.get_or_create(
-#                     user=product.user,
-#                     ordered_at=order.ordered_at,
-#                     defaults={'total': 0}
-#                 )
-#                 seller_order.total += order_item.price
-#                 seller_order.save()
-
-#         order.total = total
-#         order.save()
-
-#         cart.ordered = True
-#         cart.save()
-
-#         serializer = OrderSerializer(order)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 
 
 
@@ -431,24 +334,6 @@ class AdminProductStatusUpdateAPIView(APIView):
 
 
 
-
-
-# class UpdateOrderStatusView(APIView):
-
-#     def post(self, request, order_id):
-#         try:
-#             order_item = OrderItem.objects.get(id=order_id)
-#             status_value = request.data.get('status', None)
-            
-#             if status_value not in dict(OrderItem.STATUS_CHOICES).keys():
-#                 return Response({"error": "Invalid status value"}, status=status.HTTP_400_BAD_REQUEST)
-
-#             order_item.status = status_value
-#             order_item.save()
-
-#             return Response({"message": "Status updated successfully"}, status=status.HTTP_200_OK)
-#         except OrderItem.DoesNotExist:
-#             return Response({"error": "Order item not found"}, status=status.HTTP_404_NOT_FOUND)
         
 
 class UpdateOrderItemStatus(APIView):
@@ -569,47 +454,6 @@ class CheckoutAPIView(APIView):
         return Response({"message": "Order placed successfully. Pending approval by admin."}, status=status.HTTP_201_CREATED)
 
 
-# class PaymentSuccessView(APIView):
-#     # def get(self, request):
-#     #     return Response({"message": "Payment Successful!", "data": request.query_params})
-#     @transaction.atomic
-#     def post(self,pk , request):
-#         user = User.objects.get(pk=pk)
-#         cart = get_object_or_404(Cart, user=user, ordered=False)
-        
-#         if cart.items.count() == 0:
-#             return Response({"detail": "Cart is empty."}, status=status.HTTP_400_BAD_REQUEST)
-
-#         # Calculate total
-#         total = sum([item.product.price * item.quantity for item in cart.items.all()])
-
-#         # Create the order
-#         order = Order.objects.create(
-#             user=user,
-#             total=total,
-#             status='pending',  # New orders will be in pending status
-#         )
-
-#         # Move CartItems to OrderItems
-#         for item in cart.items.all():
-#             OrderItem.objects.create(
-#                 order=order,
-#                 product=item.product,
-#                 quantity=item.quantity,
-#                 size=item.size,
-#                 color=item.color,
-#                 price=item.product.price,
-#                 seller=item.product.user
-#             )
-
-#         # Mark cart as ordered
-#         cart.ordered = True
-#         cart.save()
-
-#         # Clear the cart
-#         cart.items.all().delete()
-
-#         return Response({"message": "Order placed successfully. Pending approval by admin."}, status=status.HTTP_201_CREATED)
 
 
 class PaymentSuccessView(APIView):
