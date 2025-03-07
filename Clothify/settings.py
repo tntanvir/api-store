@@ -30,9 +30,9 @@ SECRET_KEY = 'django-insecure-k*0adcn(0qezuat1appxvyc8u8o(m6%p8x#i9_^l*+9g12f671
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app',"*"]
+ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 
-CSRF_TRUSTED_ORIGINS = ["https://api-clothify.onrender.com","https://*.127.0.0.1","*"]
+CSRF_TRUSTED_ORIGINS = True
 
 APPEND_SLASH = False
 
